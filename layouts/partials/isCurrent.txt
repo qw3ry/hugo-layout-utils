@@ -1,0 +1,10 @@
+{{- /* This a menu util. I use it as follows: */ -}}
+{{- /* `$isCurrent := partial "fun/isCurrent.txt" (dict "page" . "current" $currentPage "menu" $menuName) | eq "true"` */ -}}
+{{- /* It checks, whether the current page is equal to the menu page. */ -}}
+{{- $currentPage := .current -}}
+{{- $menuPage := .page -}}
+{{- $menu := .menu -}}
+
+{{- $sameWithSubnodes := relURL (trim $currentPage.URL "/") | eq (relURL (trim $menuPage.URL "/")) -}}
+{{- $sameWithoutSubnodes := $currentPage.IsMenuCurrent $menu $menuPage -}}
+{{- cond $menuPage.HasChildren $sameWithSubnodes $sameWithoutSubnodes -}}

@@ -1,0 +1,23 @@
+{{- /* Very useful template to check if a nested map value is set. */ -}}
+{{- /* I use it for conditionals on .Params: */ -}}
+{{- /* `if partial "isset.txt" (dict "ctx" . "key" "nested.key.I.need.to.check") | eq "true"` */ -}}
+{{- $ctx := .ctx -}}
+{{- $keys := split .key "." -}}
+{{- $key := delimit (first 1 $keys) "" | plainify -}}
+
+{{- $type      := (printf "%T" $ctx) -}}
+{{- $typeIsMap := (findRE "^(map[[].+[]]|.*SiteSocial|\\*hugolib\\.Menus|hugolib\\.AuthorList|hugolib\\.Taxonomy|maps.Params)" $type) -}}
+{{- if $typeIsMap -}}
+  {{- with index $ctx $key -}}
+    {{- if len $keys | eq 1 -}}
+      {{- true -}}
+    {{- else -}}
+      {{- $dict := dict "ctx" . "key" (delimit (after 1 $keys) ".") -}}
+      {{- partial "isset.txt" $dict -}}
+    {{- end -}}
+  {{- else -}}
+    {{- false -}}
+  {{- end -}}
+{{- else -}}
+  {{- false -}}
+{{- end -}}
