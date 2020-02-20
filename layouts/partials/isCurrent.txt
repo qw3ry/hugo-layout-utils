@@ -5,6 +5,6 @@
 {{- $menuPage := .page -}}
 {{- $menu := .menu -}}
 
-{{- $sameWithSubnodes := relURL (trim $currentPage.URL "/") | eq (relURL (trim $menuPage.URL "/")) -}}
+{{- $sameWithSubnodes := relURL (trim $currentPage.Permalink "/") | eq (relURL (trim $menuPage.URL "/")) -}}
 {{- $sameWithoutSubnodes := $currentPage.IsMenuCurrent $menu $menuPage -}}
 {{- cond $menuPage.HasChildren $sameWithSubnodes $sameWithoutSubnodes -}}
